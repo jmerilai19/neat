@@ -14,6 +14,7 @@ Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innov
         throw std::invalid_argument("Must have atleast one input and output node.");
     }
 
+    // Create input and output nodes
     for (int i = 0; i < inputCount; i++) {
         Node node(i, NodeType::Input);
         addNode(node);
@@ -24,9 +25,12 @@ Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innov
         addNode(node);
     }
 
+    // Set up random number generator
     std::mt19937 genTmp(rd());
     gen = genTmp;
 }
+
+// Add
 
 void Genome::addConnection(Connection &connection) {
     // Check if adding the connection will create a cycle
@@ -41,15 +45,19 @@ void Genome::addNode(Node &node) {
     nodes.push_back(node);
 }
 
+// Search
+
 Node Genome::getRandomInputOrHiddenNode() {
     std::vector<Node> inputOrHiddenNodes;
 
+    // Find all input and hidden nodes 
     for (auto &node : nodes) {
         if (node.type == NodeType::Input || node.type == NodeType::Hidden) {
             inputOrHiddenNodes.push_back(node);
         }
     }
 
+    // Return a random node
     std::uniform_int_distribution<> distr(0, inputOrHiddenNodes.size() - 1);
     return inputOrHiddenNodes[distr(gen)];
 }
@@ -57,17 +65,20 @@ Node Genome::getRandomInputOrHiddenNode() {
 Node Genome::getRandomOutputOrHiddenNode() {
     std::vector<Node> outputOrHiddenNodes;
     
+    // Find all output and hidden nodes
     for (auto& node : nodes) {
         if (node.type == NodeType::Output || node.type == NodeType::Hidden) {
             outputOrHiddenNodes.push_back(node);
         }
     }
 
-    std::uniform_int_distribution<> distr(0, outputOrHiddenNodes.size() - 1); // Define the range
+    // Return a random node
+    std::uniform_int_distribution<> distr(0, outputOrHiddenNodes.size() - 1);
     return outputOrHiddenNodes[distr(gen)];
 }
 
 std::optional<Connection> Genome::findConnection(int inNodeId, int outNodeId) {
+    // Search if there already is a connection with the given inNodeId and outNodeId
     for (auto& connection : connections) {
         if (connection.inNodeId == inNodeId && connection.outNodeId == outNodeId) {
             return connection;
@@ -82,17 +93,17 @@ Connection& Genome::getRandomConnection() {
     return connections[distr(gen)];
 }
 
-// Mutations
+// Mutate
 
 void Genome::mutateAddRandomConnection() {
     Node inputNode = getRandomInputOrHiddenNode();
     Node outputNode = getRandomOutputOrHiddenNode();
 
-    // Check if link already exists
+    // Check if connection already exists
     std::optional<Connection> existingConnection = findConnection(inputNode.id, outputNode.id);
     if (existingConnection) {
-        existingConnection->enabled = true; // Enable link if it already exists
-        return;
+        existingConnection->enabled = true; // Enable connection if it already exists in case it was disabled
+        return; // Skip this mutation if connection already existed
     }
 
     // Check if adding the connection will create a cycle
@@ -111,19 +122,21 @@ void Genome::mutateAddRandomNode() {
 
     Connection& randomConnection = getRandomConnection();
 
-    // Disable the connection
+    // Disable the original connection
     randomConnection.enabled = false;
 
-    // Create new node
+    // Create a new node
     Node newNode(static_cast<int>(nodes.size()), NodeType::Hidden);
     addNode(newNode);
 
-    // Create two new connections
+    // Create two new connections around the new node
     Connection connection1(static_cast<int>(connections.size()), randomConnection.inNodeId, newNode.id, 1.0, true, innovationTracker);
     Connection connection2(static_cast<int>(connections.size()), newNode.id, randomConnection.outNodeId, randomConnection.weight, true, innovationTracker);
     addConnection(connection1);
     addConnection(connection2);
 }
+
+// Debug
 
 void Genome::printData() const {
     std::cout << "Genome: #" << id << std::endl;

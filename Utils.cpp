@@ -29,6 +29,7 @@ bool detectCycle(int node, std::unordered_map<int, std::vector<int>>& adjList, s
 bool willCreateCycle(std::vector<Connection> connections, int newInNodeId, int newOutNodeId) {
     std::unordered_map<int, std::vector<int>> adjList;
     
+    // Map input nodes to output nodes
     for (const auto& connection : connections) {
         adjList[connection.inNodeId].push_back(connection.outNodeId);
     }

@@ -5,12 +5,12 @@
 #include "InnovationTracker.hpp"
 
 Connection::Connection(int id, int inNodeId, int outNodeId, double weight, bool enabled, InnovationTracker* innovationTracker) : id(id), inNodeId(inNodeId), outNodeId(outNodeId), weight(weight), enabled(enabled) {
-    std::cout << "Connection Constructor" << std::endl;
-    int myInnovationNumber = innovationTracker->getInnovationNumber(inNodeId, outNodeId);
-    if (myInnovationNumber == -1) {
+    int myInnovationNumber = innovationTracker->getInnovationNumber(inNodeId, outNodeId); // Check if this connection is already in the innovation tracker
+
+    if (myInnovationNumber == -1) {  // If it is not, add it
         innovationNumber = innovationTracker->globalInnovationNumber;
         innovationTracker->addInnovation(inNodeId, outNodeId);
-    } else {
+    } else { // If it is, set the innovation number to the one in the innovation tracker
         innovationNumber = myInnovationNumber;
     }
 }
