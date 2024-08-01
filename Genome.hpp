@@ -9,11 +9,12 @@
 #include <vector>
 
 #include "Connection.hpp"
+#include "InnovationTracker.hpp"
 #include "Node.hpp"
 
 class Genome {
 public:
-    Genome(int id, int inputCount, int outputCount);
+    Genome(int id, int inputCount, int outputCount, InnovationTracker* InnovationTracker);
     ~Genome() = default;
 
     const int id;
@@ -22,6 +23,8 @@ public:
     int outputCount;
     std::vector<Node> nodes;
     std::vector<Connection> connections;
+
+    InnovationTracker* innovationTracker;
 
     // Add
     void addConnection(Connection &connection);

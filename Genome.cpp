@@ -5,10 +5,11 @@
 #include <random>
 
 #include "Connection.hpp"
+#include "InnovationTracker.hpp"
 #include "Node.hpp"
 #include "Utils.hpp"
 
-Genome::Genome(int id, int inputCount, int outputCount) : id(id), inputCount(inputCount), outputCount(outputCount) {
+Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innovationTracker) : id(id), inputCount(inputCount), outputCount(outputCount), innovationTracker(innovationTracker) {
     if (inputCount <= 0 || outputCount <= 0) {
         throw std::invalid_argument("Must have atleast one input and output node.");
     }
@@ -81,6 +82,8 @@ Connection& Genome::getRandomConnection() {
     return connections[distr(gen)];
 }
 
+// Mutations
+
 void Genome::mutateAddRandomConnection() {
     Node inputNode = getRandomInputOrHiddenNode();
     Node outputNode = getRandomOutputOrHiddenNode();
@@ -97,7 +100,7 @@ void Genome::mutateAddRandomConnection() {
         return;
     }
 
-    Connection newConnection(static_cast<int>(connections.size()), inputNode.id, outputNode.id, 1.0, true);
+    Connection newConnection(static_cast<int>(connections.size()), inputNode.id, outputNode.id, 1.0, true, innovationTracker);
     addConnection(newConnection);
 }
 
@@ -116,8 +119,8 @@ void Genome::mutateAddRandomNode() {
     addNode(newNode);
 
     // Create two new connections
-    Connection connection1(static_cast<int>(connections.size()), randomConnection.inNodeId, newNode.id, 1.0, true);
-    Connection connection2(static_cast<int>(connections.size()), newNode.id, randomConnection.outNodeId, randomConnection.weight, true);
+    Connection connection1(static_cast<int>(connections.size()), randomConnection.inNodeId, newNode.id, 1.0, true, innovationTracker);
+    Connection connection2(static_cast<int>(connections.size()), newNode.id, randomConnection.outNodeId, randomConnection.weight, true, innovationTracker);
     addConnection(connection1);
     addConnection(connection2);
 }
@@ -135,12 +138,14 @@ void Genome::printData() const {
         connection.printData();
     }
     std::cout << std::endl;
+
+    std::cout << "Innovation Tracker: " << innovationTracker->globalInnovationNumber << std::endl;
 }
 
 void Genome::_createFullyConnected() {
     for (int i = 0; i < inputCount; i++) {
         for (int j = 0; j < outputCount; j++) {
-            Connection connection(static_cast<int>(connections.size()), i, inputCount + j, 1.0, true);
+            Connection connection(static_cast<int>(connections.size()), i, inputCount + j, 1.0, true, innovationTracker);
             addConnection(connection);
         }
     }

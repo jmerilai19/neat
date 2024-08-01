@@ -12,6 +12,7 @@ set(Sources
     connection.cpp
     node.cpp
     utils.cpp
+    innovationtracker.cpp
 )
 
 add_executable(${This} ${Sources})
