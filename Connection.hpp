@@ -6,13 +6,15 @@ public:
     Connection(int id, int inNodeId, int outNodeId, double weight, bool enabled);
     ~Connection() = default;
 
-    int connectionId;
-    int inNodeId;
-    int outNodeId;
+    const int id;
+    const int inNodeId;
+    const int outNodeId;
     double weight;
     bool enabled;
 
-    void printData();
+    bool operator==(const Connection &other) const;
+
+    void printData() const;
 };
 
 #endif // CONNECTION_HPP

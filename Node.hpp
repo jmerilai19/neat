@@ -1,8 +1,6 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <iostream>
-
 enum class NodeType {
     Input,
     Hidden,
@@ -11,13 +9,13 @@ enum class NodeType {
 
 class Node {
 public:
-    Node(int id, NodeType type);
+    Node(int id, NodeType type) : id(id), type(type) {};
     ~Node() = default;
 
-    int nodeId;
-    NodeType type;
+    const int id;
+    const NodeType type;
 
-    void printData();
+    void printData() const;
 };
 
 #endif // NODEGENE_HPP

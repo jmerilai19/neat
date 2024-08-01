@@ -11,7 +11,7 @@ set(Sources
     genome.cpp
     connection.cpp
     node.cpp
-    population.cpp
+    utils.cpp
 )
 
 add_executable(${This} ${Sources})

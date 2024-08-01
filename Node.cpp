@@ -3,9 +3,7 @@
 #include <iostream>
 #include <string>
 
-Node::Node(int id, NodeType t) : nodeId(id), type(t) {}
-
-void Node::printData() {
+void Node::printData() const {
     std::string typeString = "Unknown";
     switch(static_cast<int>(type)) {
         case 0:
@@ -19,5 +17,5 @@ void Node::printData() {
             break;
     }
     
-    std::cout << "Node: #" << nodeId << " | " << "Type: " << typeString << std::endl;
+    std::cout << "Node: #" << id << " | " << "Type: " << typeString << std::endl;
 }
