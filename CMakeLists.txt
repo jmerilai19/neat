@@ -13,6 +13,7 @@ set(Sources
     node.cpp
     utils.cpp
     innovationtracker.cpp
+    population.cpp
 )
 
 add_executable(${This} ${Sources})

@@ -9,7 +9,7 @@
 #include "Node.hpp"
 #include "Utils.hpp"
 
-Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innovationTracker) : id(id), inputCount(inputCount), outputCount(outputCount), innovationTracker(innovationTracker) {
+Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innovationTracker, std::mt19937& gen) : id(id), inputCount(inputCount), outputCount(outputCount), innovationTracker(innovationTracker), gen(gen) {
     if (inputCount <= 0 || outputCount <= 0) {
         throw std::invalid_argument("Must have atleast one input and output node.");
     }
@@ -24,10 +24,6 @@ Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innov
         Node node(inputCount + i, NodeType::Output);
         addNode(node);
     }
-
-    // Set up random number generator
-    std::mt19937 genTmp(rd());
-    gen = genTmp;
 }
 
 // Add

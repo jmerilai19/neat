@@ -14,7 +14,7 @@
 
 class Genome {
 public:
-    Genome(int id, int inputCount, int outputCount, InnovationTracker* InnovationTracker);
+    Genome(int id, int inputCount, int outputCount, InnovationTracker* InnovationTracker, std::mt19937& gen);
     ~Genome() = default;
 
     const int id;
@@ -45,7 +45,6 @@ public:
     void _createFullyConnected(); // delete later
 
 private:
-    std::random_device rd;
     std::mt19937 gen;
 };
 

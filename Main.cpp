@@ -1,19 +1,16 @@
 #include <iostream>
 
-#include "Genome.hpp"
-#include "InnovationTracker.hpp"
+#include "Population.hpp"
 
 int main() {
-    InnovationTracker innovationTracker;
 
-    Genome genome(0, 3, 3, &innovationTracker);
-    Genome genome2(1, 3, 3, &innovationTracker);
+    Population population(3, 4, 4);
 
-    
+    population.genomes[0].mutateAddRandomConnection();
+    population.genomes[1].mutateAddRandomConnection();
+    population.genomes[1].mutateAddRandomConnection();
 
-    std::cout << std::endl;
-    genome.printData();
-    genome2.printData();
+    population.printData();
 
     return 0;
 }
