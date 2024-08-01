@@ -56,7 +56,7 @@ Node Genome::getRandomInputOrHiddenNode() {
 Node Genome::getRandomOutputOrHiddenNode() {
     std::vector<Node> outputOrHiddenNodes;
     
-    for (auto &node : nodes) {
+    for (auto& node : nodes) {
         if (node.type == NodeType::Output || node.type == NodeType::Hidden) {
             outputOrHiddenNodes.push_back(node);
         }
@@ -67,13 +67,18 @@ Node Genome::getRandomOutputOrHiddenNode() {
 }
 
 std::optional<Connection> Genome::findConnection(int inNodeId, int outNodeId) {
-    for (const auto &connection : connections) {
+    for (auto& connection : connections) {
         if (connection.inNodeId == inNodeId && connection.outNodeId == outNodeId) {
             return connection;
         }
     }
 
     return std::nullopt;
+}
+
+Connection& Genome::getRandomConnection() {
+    std::uniform_int_distribution<> distr(0, connections.size() - 1);
+    return connections[distr(gen)];
 }
 
 void Genome::mutateAddRandomConnection() {
@@ -96,16 +101,37 @@ void Genome::mutateAddRandomConnection() {
     addConnection(newConnection);
 }
 
+void Genome::mutateAddRandomNode() {
+    if (connections.empty()) {
+        return;
+    }
+
+    Connection& randomConnection = getRandomConnection();
+
+    // Disable the connection
+    randomConnection.enabled = false;
+
+    // Create new node
+    Node newNode(static_cast<int>(nodes.size()), NodeType::Hidden);
+    addNode(newNode);
+
+    // Create two new connections
+    Connection connection1(static_cast<int>(connections.size()), randomConnection.inNodeId, newNode.id, 1.0, true);
+    Connection connection2(static_cast<int>(connections.size()), newNode.id, randomConnection.outNodeId, randomConnection.weight, true);
+    addConnection(connection1);
+    addConnection(connection2);
+}
+
 void Genome::printData() const {
     std::cout << "Genome: #" << id << std::endl;
     std::cout << "Nodes: " << std::endl;
-    for (auto &node : nodes) {
+    for (auto& node : nodes) {
         node.printData();
     }
     std::cout << std::endl;
 
     std::cout << "Connections: " << std::endl;
-    for (auto &connection : connections) {
+    for (auto& connection : connections) {
         connection.printData();
     }
     std::cout << std::endl;

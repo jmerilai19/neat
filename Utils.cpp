@@ -27,8 +27,6 @@ bool detectCycle(int node, std::unordered_map<int, std::vector<int>>& adjList, s
 }
 
 bool willCreateCycle(std::vector<Connection> connections, int newInNodeId, int newOutNodeId) {
-    std::cout << "Checking for cycles" << std::endl;
-
     std::unordered_map<int, std::vector<int>> adjList;
     
     for (const auto& connection : connections) {
@@ -38,7 +36,7 @@ bool willCreateCycle(std::vector<Connection> connections, int newInNodeId, int n
     // Temporarily add the new connection
     adjList[newInNodeId].push_back(newOutNodeId);
     
-    // Perform a Depth First Traversal (DFS) to detect cycles
+    // Perform a DFS to detect cycles
     std::unordered_set<int> visited;
     std::unordered_set<int> recStack;
     

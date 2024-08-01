@@ -30,10 +30,12 @@ public:
     // Search
     Node getRandomInputOrHiddenNode();
     Node getRandomOutputOrHiddenNode();
+    Connection& getRandomConnection();
     std::optional<Connection> findConnection(int inNodeId, int outNodeId);
 
     // Mutate
     void mutateAddRandomConnection();
+    void mutateAddRandomNode();
 
     // Debug
     void printData() const;
