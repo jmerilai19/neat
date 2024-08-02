@@ -17,5 +17,5 @@ void Node::printData() const {
             break;
     }
     
-    std::cout << "Node: #" << id << " | " << "Type: " << typeString << std::endl;
+    std::cout << "#" << id << ":" << " | " << "Type: " << typeString << std::endl;
 }

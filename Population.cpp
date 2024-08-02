@@ -173,16 +173,16 @@ void Population::speciate(float compatibilityThreshold, float c1, float c2, floa
 }
 
 void Population::printData() const {
-    std::cout << "Population: " << std::endl;
-    for (auto &genome : genomes) {
-        genome.printData();
-    }
-
     std::cout << "Species: " << std::endl;
     for (auto &speciesGenomes : species) {
+        std::cout << "{ ";
         for (auto &genomeId : speciesGenomes) {
-            std::cout << genomeId << " ";
+            std::cout << "#" << genomeId << " ";
         }
-        std::cout << std::endl;
+        std::cout << "}" << std::endl;
     }
+
+    //for (auto &genome : genomes) {
+    //    genome.printData();
+    //}
 }

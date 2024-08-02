@@ -39,6 +39,7 @@ public:
     // Mutate
     void mutateAddRandomConnection();
     void mutateAddRandomNode();
+    void mutateWeight();
 
     // Debug
     void printData() const;

@@ -5,8 +5,8 @@
 
 class Connection {
 public:
-    Connection() = default;
     Connection(int id, int inNodeId, int outNodeId, double weight, bool enabled, InnovationTracker* innovationTracker);
+    Connection() = default;
     ~Connection() = default;
 
     int id;

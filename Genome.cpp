@@ -132,6 +132,30 @@ void Genome::mutateAddRandomNode() {
     addConnection(connection2);
 }
 
+void Genome::mutateWeight(Connection &connection) {
+    if (connections.empty()) {
+        return;
+    }
+
+    std::uniform_int_distribution<> distr(0, 2);
+
+    int option = distr(*gen);
+
+    if (option == 0) {
+        // Multiply weight by 0.5 - 1.5
+        std::normal_distribution<> weightDistr(0.5, 1.5);
+        connection.weight *= weightDistr(*gen);
+    } else if (option == 1) {
+        // Flip the sign of weight
+        std::uniform_int_distribution<> weightDistr(0, 1);
+        connection.weight = weightDistr == 0 ? connection.weight : -connection.weight;
+    } else {
+        // Add a value between -1.0 and 1.0
+        std::uniform_int_distribution<> weightDistr(-1.0, 1.0);
+        connection.weight += weightDistr(*gen);
+    }
+}
+
 // Debug
 
 void Genome::printData() const {
@@ -140,8 +164,6 @@ void Genome::printData() const {
     for (auto& node : nodes) {
         node.printData();
     }
-    std::cout << std::endl;
-
     std::cout << "Connections: " << std::endl;
     for (auto& connection : connections) {
         connection.printData();

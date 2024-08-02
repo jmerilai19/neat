@@ -20,5 +20,5 @@ bool Connection::operator==(const Connection &other) const {
 }
 
 void Connection::printData() const {
-    std::cout << "Connection: #" << id << " | " << "InNode: #" << inNodeId << " | " << "OutNode: #" << outNodeId << " | " << "Weight: " << weight << " | " << "Enabled: " << enabled << " | " << "InnovationNumber: " << innovationNumber << std::endl;
+    std::cout << "#" << id << ":" << " | " << "InNode: #" << inNodeId << " | " << "OutNode: #" << outNodeId << " | " << "Weight: " << weight << " | " << "Enabled: " << enabled << " | " << "InnovationNo: " << innovationNumber << std::endl;
 }

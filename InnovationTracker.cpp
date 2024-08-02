@@ -21,6 +21,6 @@ void InnovationTracker::printData() const {
     std::cout << "Global Innovation Number: " << globalInnovationNumber << std::endl;
 
     for (const auto& innovation : innovations) {
-        std::cout << "Innovation Number: " << innovation.innovationNumber << " In Node Id: " << innovation.inNodeId << " Out Node Id: " << innovation.outNodeId << std::endl;
+        std::cout << "Innovation #: " << innovation.innovationNumber << " | " << " In Node Id: " << innovation.inNodeId << " | " << " Out Node Id: " << innovation.outNodeId << std::endl;
     }
 }
