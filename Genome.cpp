@@ -148,7 +148,7 @@ void Genome::mutateWeight(Connection &connection) {
     } else if (option == 1) {
         // Flip the sign of weight
         std::uniform_int_distribution<> weightDistr(0, 1);
-        connection.weight = weightDistr == 0 ? connection.weight : -connection.weight;
+        connection.weight = weightDistr(*gen) == 0 ? connection.weight : -connection.weight;
     } else {
         // Add a value between -1.0 and 1.0
         std::uniform_int_distribution<> weightDistr(-1.0, 1.0);

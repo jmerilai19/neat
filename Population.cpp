@@ -15,6 +15,11 @@ Population::Population(int populationSize, int inputCount, int outputCount) : po
 
     for (int i = 0; i < populationSize; i++) {
         Genome genome(i, inputCount, outputCount, &innovationTracker, &gen);
+        std::uniform_int_distribution<> distr(1, 3);
+        int connectionCount = distr(gen);
+        for (int j = 0; j < connectionCount; j++) {
+            genome.mutateAddRandomConnection();
+        }
         genomes.push_back(genome);
     }
 }
@@ -173,16 +178,16 @@ void Population::speciate(float compatibilityThreshold, float c1, float c2, floa
 }
 
 void Population::printData() const {
-    std::cout << "Species: " << std::endl;
+    /*std::cout << "Species: " << std::endl;
     for (auto &speciesGenomes : species) {
         std::cout << "{ ";
         for (auto &genomeId : speciesGenomes) {
             std::cout << "#" << genomeId << " ";
         }
         std::cout << "}" << std::endl;
-    }
+    }*/
 
-    //for (auto &genome : genomes) {
-    //    genome.printData();
-    //}
+    for (auto &genome : genomes) {
+        genome.printData();
+    }
 }
