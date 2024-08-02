@@ -14,6 +14,7 @@ set(Sources
     utils.cpp
     innovationtracker.cpp
     population.cpp
+    species.cpp
 )
 
 add_executable(${This} ${Sources})

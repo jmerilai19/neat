@@ -6,6 +6,7 @@
 
 #include "Genome.hpp"
 #include "InnovationTracker.hpp"
+#include "Species.hpp"
 
 class Population {
 public:
@@ -18,9 +19,8 @@ public:
     InnovationTracker innovationTracker;
 
     std::vector<Genome> genomes;
-    std::vector<std::vector<int>> species;
+    std::vector<Species> species;
 
-    Genome& findGenomeById(int id);
     Genome crossover(const Genome &genome1, const Genome &genome2);
 
     void initializePopulation();

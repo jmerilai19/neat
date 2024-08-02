@@ -147,47 +147,65 @@ float Population::calculateCompatibilityDistance(const Genome& genomeA, const Ge
     return compatibilityDistance;
 }
 
-Genome& Population::findGenomeById(int id) {
-    for (auto& genome : genomes) {
-        if (genome.id == id) {
-            return genome;
-        }
-    }
-
-    throw std::runtime_error("Genome with id " + std::to_string(id) + " not found");
-}
-
 void Population::speciate(float compatibilityThreshold, float c1, float c2, float c3) {
     species.clear();
 
     for (auto& genome : genomes) {
         bool foundSpecies = false;
-        for (auto& existingSpecies : species) {
-            std::uniform_int_distribution<> distr(0, existingSpecies.size() - 1);
-            if (calculateCompatibilityDistance(genome, findGenomeById(existingSpecies[distr(gen)]), c1, c2, c3) < compatibilityThreshold) {
-                existingSpecies.push_back(genome.id);
+        for (auto& exisitingSpecies : species) {
+            std::uniform_int_distribution<> distr(0, static_cast<int>(exisitingSpecies.genomes.size()) - 1);
+            if (calculateCompatibilityDistance(genome, exisitingSpecies.genomes[distr(gen)], c1, c2, c3) < compatibilityThreshold) {
+                exisitingSpecies.addGenome(genome);
                 foundSpecies = true;
                 break;
             }
         }
 
         if (!foundSpecies) {
-            species.push_back(std::vector<int>{genome.id});
+            Species newSpecies;
+            newSpecies.addGenome(genome);
+            species.push_back(newSpecies);
         }
+    }
+
+    // Adjust fitness of each individual genome according to the size of the species
+    for(auto& s : species) {
+        for(auto& genome : s.genomes) {
+            genome.adjustedFitness = genome.fitness / s.genomes.size();
+        }
+    }
+
+    // Calculate new number of offspring per species (= total adjusted fitness in species / mean adjusted fitness in population)
+    float totalAdjustedFitnessInPopulation = 0;
+    for(auto& s : species) {
+        for(auto& genome : s.genomes) {
+            totalAdjustedFitnessInPopulation += genome.adjustedFitness;
+        }
+    }
+
+    float meanAdjustedFitnessInPopulation = totalAdjustedFitnessInPopulation / genomes.size();
+
+    float totalAdjustedFitnessInSpecies = 0;
+    for(auto& s : species) {
+        for(auto& genome : s.genomes) {
+            totalAdjustedFitnessInSpecies += genome.adjustedFitness;
+        }
+
+        s.newNumberOfOffspring = totalAdjustedFitnessInSpecies / meanAdjustedFitnessInPopulation;
     }
 }
 
 void Population::printData() const {
-    /*std::cout << "Species: " << std::endl;
+    std::cout << "Species: " << std::endl;
     for (auto &speciesGenomes : species) {
         std::cout << "{ ";
-        for (auto &genomeId : speciesGenomes) {
-            std::cout << "#" << genomeId << " ";
+        for (auto &genome : speciesGenomes.genomes) {
+            std::cout << "#" << genome.id << " ";
         }
         std::cout << "}" << std::endl;
-    }*/
-
-    for (auto &genome : genomes) {
-        genome.printData();
     }
+
+    //for (auto &genome : genomes) {
+    //    genome.printData();
+    //}
 }

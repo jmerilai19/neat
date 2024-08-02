@@ -19,7 +19,9 @@ public:
 
     int inputCount;
     int outputCount;
-    int fitness;
+    float fitness;
+    float adjustedFitness;
+
 
     std::vector<Node> nodes;
     std::vector<Connection> connections;
