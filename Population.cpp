@@ -140,9 +140,47 @@ float Population::calculateCompatibilityDistance(const Genome& genomeA, const Ge
     return compatibilityDistance;
 }
 
+Genome& Population::findGenomeById(int id) {
+    for (auto& genome : genomes) {
+        if (genome.id == id) {
+            return genome;
+        }
+    }
+
+    throw std::runtime_error("Genome with id " + std::to_string(id) + " not found");
+}
+
+void Population::speciate(float compatibilityThreshold, float c1, float c2, float c3) {
+    species.clear();
+
+    for (auto& genome : genomes) {
+        bool foundSpecies = false;
+        for (auto& existingSpecies : species) {
+            if (calculateCompatibilityDistance(genome, findGenomeById(existingSpecies[0]), c1, c2, c3) < compatibilityThreshold) {
+                existingSpecies.push_back(genome.id);
+                foundSpecies = true;
+                break;
+            }
+        }
+
+        if (!foundSpecies) {
+            species.push_back(std::vector<int>{genome.id});
+        }
+    }
+}
+
+
 void Population::printData() const {
     std::cout << "Population: " << std::endl;
     for (auto &genome : genomes) {
         genome.printData();
+    }
+
+    std::cout << "Species: " << std::endl;
+    for (auto &speciesGenomes : species) {
+        for (auto &genomeId : speciesGenomes) {
+            std::cout << genomeId << " ";
+        }
+        std::cout << std::endl;
     }
 }

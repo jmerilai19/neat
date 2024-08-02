@@ -18,10 +18,13 @@ public:
     InnovationTracker innovationTracker;
 
     std::vector<Genome> genomes;
+    std::vector<std::vector<int>> species;
 
+    Genome& findGenomeById(int id);
     Genome crossover(const Genome &genome1, const Genome &genome2);
 
     float calculateCompatibilityDistance(const Genome &genomeA, const Genome &genomeB, float c1, float c2, float c3);
+    void speciate(float compatibilityThreshold, float c1, float c2, float c3);
 
     // Debug
     void printData() const;
