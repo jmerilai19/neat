@@ -5,12 +5,13 @@
 
 class Connection {
 public:
+    Connection() = default;
     Connection(int id, int inNodeId, int outNodeId, double weight, bool enabled, InnovationTracker* innovationTracker);
     ~Connection() = default;
 
-    const int id;
-    const int inNodeId;
-    const int outNodeId;
+    int id;
+    int inNodeId;
+    int outNodeId;
     double weight;
     bool enabled;
     int innovationNumber;

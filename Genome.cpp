@@ -9,7 +9,7 @@
 #include "Node.hpp"
 #include "Utils.hpp"
 
-Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innovationTracker, std::mt19937& gen) : id(id), inputCount(inputCount), outputCount(outputCount), innovationTracker(innovationTracker), gen(gen) {
+Genome::Genome(int id, int inputCount, int outputCount, InnovationTracker* innovationTracker, std::mt19937* gen) : id(id), inputCount(inputCount), outputCount(outputCount), innovationTracker(innovationTracker), gen(gen), fitness(0) {
     if (inputCount <= 0 || outputCount <= 0) {
         throw std::invalid_argument("Must have atleast one input and output node.");
     }
@@ -55,7 +55,7 @@ Node Genome::getRandomInputOrHiddenNode() {
 
     // Return a random node
     std::uniform_int_distribution<> distr(0, inputOrHiddenNodes.size() - 1);
-    return inputOrHiddenNodes[distr(gen)];
+    return inputOrHiddenNodes[distr(*gen)];
 }
 
 Node Genome::getRandomOutputOrHiddenNode() {
@@ -70,7 +70,7 @@ Node Genome::getRandomOutputOrHiddenNode() {
 
     // Return a random node
     std::uniform_int_distribution<> distr(0, outputOrHiddenNodes.size() - 1);
-    return outputOrHiddenNodes[distr(gen)];
+    return outputOrHiddenNodes[distr(*gen)];
 }
 
 std::optional<Connection> Genome::findConnection(int inNodeId, int outNodeId) {
@@ -86,7 +86,7 @@ std::optional<Connection> Genome::findConnection(int inNodeId, int outNodeId) {
 
 Connection& Genome::getRandomConnection() {
     std::uniform_int_distribution<> distr(0, connections.size() - 1);
-    return connections[distr(gen)];
+    return connections[distr(*gen)];
 }
 
 // Mutate
@@ -147,8 +147,6 @@ void Genome::printData() const {
         connection.printData();
     }
     std::cout << std::endl;
-
-    std::cout << "Innovation Tracker: " << innovationTracker->globalInnovationNumber << std::endl;
 }
 
 void Genome::_createFullyConnected() {

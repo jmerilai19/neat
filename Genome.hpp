@@ -14,13 +14,15 @@
 
 class Genome {
 public:
-    Genome(int id, int inputCount, int outputCount, InnovationTracker* InnovationTracker, std::mt19937& gen);
+    Genome(int id, int inputCount, int outputCount, InnovationTracker* InnovationTracker, std::mt19937* gen);
     ~Genome() = default;
 
     const int id;
 
     int inputCount;
     int outputCount;
+    int fitness;
+
     std::vector<Node> nodes;
     std::vector<Connection> connections;
 
@@ -45,7 +47,7 @@ public:
     void _createFullyConnected(); // delete later
 
 private:
-    std::mt19937 gen;
+    std::mt19937* gen;
 };
 
 #endif // GENOME_HPP
