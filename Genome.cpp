@@ -148,12 +148,3 @@ void Genome::printData() const {
     }
     std::cout << std::endl;
 }
-
-void Genome::_createFullyConnected() {
-    for (int i = 0; i < inputCount; i++) {
-        for (int j = 0; j < outputCount; j++) {
-            Connection connection(static_cast<int>(connections.size()), i, inputCount + j, 1.0, true, innovationTracker);
-            addConnection(connection);
-        }
-    }
-}

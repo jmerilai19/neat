@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <random>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Genome.hpp"
 #include "InnovationTracker.hpp"
@@ -156,7 +158,8 @@ void Population::speciate(float compatibilityThreshold, float c1, float c2, floa
     for (auto& genome : genomes) {
         bool foundSpecies = false;
         for (auto& existingSpecies : species) {
-            if (calculateCompatibilityDistance(genome, findGenomeById(existingSpecies[0]), c1, c2, c3) < compatibilityThreshold) {
+            std::uniform_int_distribution<> distr(0, existingSpecies.size() - 1);
+            if (calculateCompatibilityDistance(genome, findGenomeById(existingSpecies[distr(gen)]), c1, c2, c3) < compatibilityThreshold) {
                 existingSpecies.push_back(genome.id);
                 foundSpecies = true;
                 break;
@@ -168,7 +171,6 @@ void Population::speciate(float compatibilityThreshold, float c1, float c2, floa
         }
     }
 }
-
 
 void Population::printData() const {
     std::cout << "Population: " << std::endl;

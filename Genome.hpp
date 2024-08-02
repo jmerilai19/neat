@@ -4,8 +4,6 @@
 #include <cmath>
 #include <optional>
 #include <random>
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 #include "Connection.hpp"
@@ -44,7 +42,6 @@ public:
 
     // Debug
     void printData() const;
-    void _createFullyConnected(); // delete later
 
 private:
     std::mt19937* gen;
